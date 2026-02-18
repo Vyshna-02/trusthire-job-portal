@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Post Job</title>
+</head>
+<body>
+    <h2>Post a Job</h2>
+
+    {% for message in messages %}
+        <p>{{ message }}</p>
+    {% endfor %}
+
+    <form method="POST">
+        {% csrf_token %}
+        <input type="text" name="title" placeholder="Job title" required><br><br>
+        <textarea name="description" placeholder="Job description" required></textarea><br><br>
+        <input type="text" name="location" placeholder="Location" required><br><br>
+        <button type="submit">Submit Job</button>
+    </form>
+</body>
+</html>

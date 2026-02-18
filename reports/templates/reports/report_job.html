@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <h2>Report Job: {{ job.title }}</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+        <textarea name="reason" placeholder="Explain why this job looks like a scam" required></textarea><br><br>
+        <button type="submit">Submit Report</button>
+    </form>
+</body>
+</html>
