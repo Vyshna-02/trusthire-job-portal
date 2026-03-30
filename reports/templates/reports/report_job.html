@@ -1,12 +1,62 @@
-<!DOCTYPE html>
-<html>
-<body>
-    <h2>Report Job: {{ job.title }}</h2>
+{% extends 'base.html' %}
 
-    <form method="POST">
-        {% csrf_token %}
-        <textarea name="reason" placeholder="Explain why this job looks like a scam" required></textarea><br><br>
-        <button type="submit">Submit Report</button>
-    </form>
-</body>
-</html>
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            
+            <div class="text-center mb-4">
+                <div class="icon-box-danger mb-3">
+                    <i class="bi bi-shield-exclamation"></i>
+                </div>
+                <h2 class="fw-800 text-dark">Report Suspicious Activity</h2>
+                <p class="text-muted">Help us keep TrustHire safe by flagging potential scams.</p>
+            </div>
+
+            <div class="report-card p-4 p-lg-5 shadow-sm">
+                <div class="mb-4 pb-3 border-bottom">
+                    <label class="extra-small text-uppercase fw-bold text-muted d-block mb-1">Flagging Position:</label>
+                    <h5 class="fw-bold mb-0">{{ job.title }}</h5>
+                    <small class="text-primary">{{ job.company_name|default:job.employer.username }}</small>
+                </div>
+
+                <form method="POST">
+                    {% csrf_token %}
+                    
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Why are you reporting this?</label>
+                        <select name="reason" class="form-select custom-input" required>
+                            <option value="" selected disabled>Select a reason...</option>
+                            <option value="scam">Suspected Scam / Fake Job</option>
+                            <option value="off_platform">Asking for money or off-platform payment</option>
+                            <option value="inappropriate">Inappropriate or Offensive content</option>
+                            <option value="misleading">Misleading information</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Additional Details</label>
+                        <textarea name="description" class="form-control custom-input" rows="5" 
+                                  placeholder="Please provide any evidence or details to help our moderators..." required></textarea>
+                    </div>
+
+                    <div class="alert alert-warning border-0 small d-flex gap-3 mb-4">
+                        <i class="bi bi-info-circle-fill"></i>
+                        <div>
+                            Our moderation team will review this listing within 24 hours. False reporting may result in account suspension.
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-danger py-3 fw-bold rounded-3">
+                            Submit Security Report
+                        </button>
+                        <a href="{% url 'job_detail' job.id %}" class="btn btn-light py-2 text-muted">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

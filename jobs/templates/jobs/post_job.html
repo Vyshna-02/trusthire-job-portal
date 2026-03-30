@@ -1,21 +1,129 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Post Job</title>
-</head>
-<body>
-    <h2>Post a Job</h2>
+{% extends 'base.html' %}
+{% block content %}
 
-    {% for message in messages %}
-        <p>{{ message }}</p>
-    {% endfor %}
+<div class="form-page-wrapper py-5">
+    <div class="form-container-card shadow-lg">
+        <div class="form-header text-center mb-4">
+            <div class="icon-circle bg-soft-primary mb-3">
+                <i class="bi bi-briefcase-fill text-primary"></i>
+            </div>
+            <h2 class="fw-800">Post a New Job</h2>
+            <p class="text-muted">High-quality details attract high-quality candidates.</p>
+        </div>
 
-    <form method="POST">
-        {% csrf_token %}
-        <input type="text" name="title" placeholder="Job title" required><br><br>
-        <textarea name="description" placeholder="Job description" required></textarea><br><br>
-        <input type="text" name="location" placeholder="Location" required><br><br>
-        <button type="submit">Submit Job</button>
-    </form>
-</body>
-</html>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} animate-slide-down border-0 shadow-sm">
+                    <i class="bi bi-info-circle me-2"></i> {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="POST" class="modern-job-form px-lg-4">
+            {% csrf_token %}
+            
+            <div class="row">
+                <div class="col-md-12 form-group mb-4">
+                    <label class="form-label fw-bold" for="title">Job Title</label>
+                    <input type="text" id="title" name="title" class="form-control custom-input" placeholder="e.g. Senior Python Developer" required>
+                </div>
+
+                <div class="col-md-6 form-group mb-4">
+                    <label class="form-label fw-bold" for="category">Category</label>
+                    <select id="category" name="category" class="form-select custom-input" required>
+                        <option value="" selected disabled>Select Category</option>
+                        <option value="tech">Technology</option>
+                        <option value="marketing">Marketing</option>
+                        <option value="design">Design</option>
+                        <option value="sales">Sales</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6 form-group mb-4">
+                    <label class="form-label fw-bold" for="job_type">Employment Type</label>
+                    <select id="job_type" name="job_type" class="form-select custom-input" required>
+                        <option value="Full-time">Full-time</option>
+                        <option value="Part-time">Part-time</option>
+                        <option value="Contract">Contract</option>
+                        <option value="Internship">Internship</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6 form-group mb-4">
+                    <label class="form-label fw-bold" for="location">Location</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0"><i class="bi bi-geo-alt"></i></span>
+                        <input type="text" id="location" name="location" class="form-control custom-input border-start-0" placeholder="e.g. Remote or New York, NY" required>
+                    </div>
+                </div>
+
+                <div class="col-md-6 form-group mb-4">
+                    <label class="form-label fw-bold" for="salary">Salary Range (Optional)</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0"><i class="bi bi-cash-stack"></i></span>
+                        <input type="text" id="salary" name="salary" class="form-control custom-input border-start-0" placeholder="e.g. $80k - $120k">
+                    </div>
+                </div>
+
+                <div class="col-md-12 form-group mb-4">
+                    <label class="form-label fw-bold" for="description">Detailed Description</label>
+                    <textarea id="description" name="description" class="form-control custom-input" rows="8" placeholder="Outline the role, requirements, and benefits..." required></textarea>
+                    <div class="form-text text-end mt-1">Minimum 100 characters recommended for better visibility.</div>
+                </div>
+            </div>
+
+            <div class="form-check mb-4 bg-light p-3 rounded-3 border">
+                <input class="form-check-input ms-0 me-2" type="checkbox" id="terms" required>
+                <label class="form-check-label small text-muted" for="terms">
+                    I confirm this is a legitimate job opening and agree to TrustHire's <a href="#">Anti-Scam Policy</a>.
+                </label>
+            </div>
+
+            <div class="form-actions d-flex align-items-center gap-3">
+                <button type="submit" class="btn btn-primary btn-lg flex-grow-1 fw-bold rounded-pill shadow-sm">
+                    Publish Job Listing
+                </button>
+                <a href="{% url 'job_list' %}" class="btn btn-link text-decoration-none text-muted fw-bold">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .form-container-card {
+        max-width: 800px;
+        margin: 0 auto;
+        background: white;
+        padding: 3rem;
+        border-radius: 20px;
+    }
+    .icon-circle {
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        margin: 0 auto;
+        font-size: 1.5rem;
+    }
+    .custom-input {
+        background-color: #f8fafc;
+        border: 1.5px solid #e2e8f0;
+        padding: 0.75rem 1rem;
+        border-radius: 12px;
+        transition: all 0.2s;
+    }
+    .custom-input:focus {
+        background-color: #fff;
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.1);
+    }
+    .btn-primary-large {
+        padding: 1rem 2rem;
+        font-size: 1.1rem;
+    }
+</style>
+
+{% endblock %}

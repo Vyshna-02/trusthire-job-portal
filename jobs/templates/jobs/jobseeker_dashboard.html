@@ -1,37 +1,87 @@
 {% extends 'base.html' %}
+
 {% block content %}
-<div class="container mt-4">
-    <h2>My Applications</h2>
+<div class="dashboard-container">
+    <div class="d-flex justify-content-between align-items-end mb-5">
+        <div>
+            <h2 class="fw-800 text-dark mb-1">My Applications</h2>
+            <p class="text-muted mb-0">Track and manage your active job pursuits.</p>
+        </div>
+        <div class="text-end">
+            <a href="{% url 'job_list' %}" class="btn btn-outline-primary rounded-pill px-4">
+                <i class="bi bi-search me-2"></i>Find More Jobs
+            </a>
+        </div>
+    </div>
 
     {% if applications %}
-    <table class="table table-striped mt-3">
-        <thead>
-            <tr>
-                <th>Job Title</th>
-                <th>Employer</th>
-                <th>Applied At</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for app in applications %}
-            <tr>
-                <td>{{ app.job.title }}</td>
-                <td>{{ app.job.employer.username }}</td>
-                <td>{{ app.applied_at|date:"d M Y H:i" }}</td>
-                <td>
-                    {% if app.job.is_approved %}
-                        <span class="badge bg-success">Open</span>
-                    {% else %}
-                        <span class="badge bg-warning text-dark">Pending</span>
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="dashboard-table-card border-0 shadow-sm">
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead>
+                    <tr>
+                        <th class="ps-4 py-3">Job Details</th>
+                        <th class="py-3">Applied Date</th>
+                        <th class="py-3">Hiring Status</th>
+                        <th class="pe-4 py-3 text-end">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for app in applications %}
+                    <tr>
+                        <td class="ps-4 py-4">
+                            <div class="d-flex align-items-center">
+                                <div class="company-logo-sm me-3">
+                                    {{ app.job.company_name|default:app.job.employer.username|slice:":1"|upper }}
+                                </div>
+                                <div>
+                                    <div class="fw-bold text-dark fs-6">{{ app.job.title }}</div>
+                                    <div class="text-muted small">
+                                        {{ app.job.company_name|default:app.job.employer.username }} 
+                                        {% if app.job.is_approved %}
+                                            <i class="bi bi-patch-check-fill text-success ms-1" title="Verified Employer"></i>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="text-dark small fw-500">{{ app.applied_at|date:"d M Y" }}</div>
+                            <div class="extra-small text-muted">{{ app.applied_at|timesince }} ago</div>
+                        </td>
+                        <td>
+                            {% if app.job.is_approved %}
+                                <span class="badge-soft badge-soft-success">
+                                    <span class="dot bg-success"></span> Active
+                                </span>
+                            {% else %}
+                                <span class="badge-soft badge-soft-warning">
+                                    <span class="dot bg-warning"></span> Pending Review
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td class="pe-4 text-end">
+                            <a href="{% url 'job_detail' app.job.id %}" class="btn btn-light btn-sm rounded-pill px-3 border">
+                                View Listing
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
     {% else %}
-        <p>You haven't applied to any jobs yet.</p>
+    <div class="text-center py-5 dashboard-table-card">
+        <div class="mb-4">
+            <div class="empty-state-icon mx-auto">
+                <i class="bi bi-send-x"></i>
+            </div>
+        </div>
+        <h4 class="fw-800 text-dark">No applications yet</h4>
+        <p class="text-muted mb-4">You haven't applied to any jobs. Start your journey by browsing verified listings.</p>
+        <a href="{% url 'job_list' %}" class="btn btn-primary px-5 py-2">Explore Jobs</a>
+    </div>
     {% endif %}
 </div>
 {% endblock %}

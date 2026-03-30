@@ -1,37 +1,81 @@
 {% extends 'base.html' %}
+
 {% block content %}
-
-<div class="row justify-content-center align-items-center" style="min-height:75vh;">
-  <div class="col-md-6">
-    <div class="card shadow-lg border-0">
-      <div class="card-body p-4">
-
-        <div class="text-center mb-3">
-          <img src="https://cdn-icons-png.flaticon.com/512/942/942799.png"
-               width="80" alt="signup">
-          <h4 class="fw-bold">Create Account</h4>
-          <p class="text-muted small">Join TrustHire – scam-free hiring</p>
+<div class="auth-split-wrapper">
+    <div class="auth-sidebar d-none d-lg-flex">
+        <div class="auth-sidebar-content">
+            <div class="mb-5">
+                <a href="/" class="text-white text-decoration-none fw-800 fs-3">TRUSTHIRE</a>
+            </div>
+            
+            <h1 class="display-5 fw-800 text-white mb-4">Join the Future of <span class="text-accent-light">Safe Hiring.</span></h1>
+            <p class="lead text-white-50 mb-5">The only job portal that verifies every listing to protect you from recruitment scams.</p>
+            
+            <div class="feature-stack">
+                <div class="feature-item-glass d-flex align-items-center mb-4">
+                    <div class="feature-icon-glass me-3"><i class="bi bi-shield-check"></i></div>
+                    <div>
+                        <h6 class="mb-0 text-white fw-bold">Verified Profiles</h6>
+                        <p class="mb-0 text-white-50 extra-small">We confirm company identities manually.</p>
+                    </div>
+                </div>
+                <div class="feature-item-glass d-flex align-items-center">
+                    <div class="feature-icon-glass me-3"><i class="bi bi-lightning-charge"></i></div>
+                    <div>
+                        <h6 class="mb-0 text-white fw-bold">Instant Reporting</h6>
+                        <p class="mb-0 text-white-50 extra-small">One-click scam alerts for the community.</p>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <form method="post">
-          {% csrf_token %}
-
-          {{ form.as_p }}
-
-          <button type="submit" class="btn btn-success w-100">
-            Sign Up
-          </button>
-        </form>
-
-        <p class="text-center small mt-3">
-          Already have an account?
-          <a href="{% url 'login' %}">Login</a>
-        </p>
-
-      </div>
     </div>
-  </div>
-</div>
 
+    <div class="auth-form-section py-5">
+        <div class="signup-container">
+            <div class="mb-4 d-lg-none text-center">
+                <h2 class="text-primary fw-800">TRUSTHIRE</h2>
+            </div>
+            
+            <div class="mb-4">
+                <h2 class="fw-800 text-dark mb-1">Create Account</h2>
+                <p class="text-muted small">Fill in the details to get started.</p>
+            </div>
+
+            <form method="post" action="{% url 'signup' %}" class="modern-form">
+                {% csrf_token %}
+
+                {% if form.errors %}
+                    <div class="alert alert-danger border-0 shadow-sm small py-2">
+                        Please correct the errors highlighted below.
+                    </div>
+                {% endif %}
+
+                {% for field in form %}
+                <div class="form-group mb-3">
+                    <label class="form-label small fw-bold text-dark mb-1">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.help_text %}
+                        <div class="extra-small text-muted mt-1 opacity-75">{{ field.help_text|safe }}</div>
+                    {% endif %}
+                    {% if field.errors %}
+                        <div class="text-danger extra-small mt-1 fw-bold">{{ field.errors|striptags }}</div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+
+                <button type="submit" class="btn btn-primary-large w-100 mt-4">
+                    Create My Account
+                </button>
+            </form>
+
+            <div class="text-center mt-4">
+                <p class="text-muted small">
+                    Already have an account? 
+                    <a href="{% url 'login' %}" class="text-primary fw-800 text-decoration-none ms-1">Login</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 

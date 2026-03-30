@@ -19,7 +19,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
+# SECURITY WARNING: keep the secret key used in production secret!STATICFILES_DIRS = [
+
 SECRET_KEY = 'django-insecure-&c7_)hq)@df&ati!agg2t4)5wrzl_0kq2hy#q8o#a72$vgox&-'
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -119,6 +120,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = 'static/'
-AUTH_USER_MODEL = 'accounts.User'
+STATIC_URL = '/static/'
 
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
+AUTH_USER_MODEL = 'accounts.User'
